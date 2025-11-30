@@ -1,4 +1,4 @@
 return lol = {
-  Unit = "", 
-  Player = ""
+  Unit = "Broccoli", 
+  Player = "RiftWarph368"
 }
