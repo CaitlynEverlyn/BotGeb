@@ -1,4 +1,4 @@
-return lol = {
+return {
   Unit = "Broccoli", 
   Player = "RiftWarph368"
 }
