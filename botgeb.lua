@@ -1,1 +1,4 @@
-
+return lol = {
+  Unit = "", 
+  Player = ""
+}
