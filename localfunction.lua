@@ -749,6 +749,8 @@ elseif not uis.TouchEnabled and uis.KeyboardEnabled and uis.MouseEnabled then
 				if task3(number) == true then
 					print("done")
 					DK1 = false
+					task.wait(3)
+					plr:Kick()
 					break
 				end
 
