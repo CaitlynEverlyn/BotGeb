@@ -674,6 +674,8 @@ elseif not uis.TouchEnabled and uis.KeyboardEnabled and uis.MouseEnabled then
 		for o = 1,number do
 			delta()
 		end
+		task.wait(15)
+		plr:Kick()
 		
 		return true
 
@@ -749,8 +751,7 @@ elseif not uis.TouchEnabled and uis.KeyboardEnabled and uis.MouseEnabled then
 				if task3(number) == true then
 					print("done")
 					DK1 = false
-					task.wait(15)
-					plr:Kick()
+
 					break
 				end
 
