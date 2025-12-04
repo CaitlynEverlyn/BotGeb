@@ -1,5 +1,5 @@
 return {
-  Unit = "Daisy", 
+  Unit = "Tomato", 
   Player = "RiftWarph",
   Mode = {
     Titfortats = false,
