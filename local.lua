@@ -674,7 +674,7 @@ elseif not uis.TouchEnabled and uis.KeyboardEnabled and uis.MouseEnabled then
 		for o = 1,number do
 			delta()
 		end
-		task.wait(15)
+		task.wait(25)
 		plr:Kick()
 		
 		return true
