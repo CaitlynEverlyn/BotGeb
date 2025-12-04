@@ -1,4 +1,7 @@
 return {
   Unit = "Daisy", 
-  Player = "RiftWarph"
+  Player = "RiftWarph",
+  Mode = {
+    Titfortats = false,
+  }
 }
