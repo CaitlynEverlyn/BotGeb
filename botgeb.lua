@@ -1,4 +1,4 @@
 return {
-  Unit = "Daisy", 
+  Unit = "Tomato", 
   Player = "RiftWarph",
 }
