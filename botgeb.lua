@@ -7,6 +7,6 @@ return {
 
   AutoMacro = {
     ChooseOn = "Garden Graveyard Story",
-    ChooseOn2 = "Garden",
+    ChooseOn2 = "Winter Wonderland",
   }
 }
