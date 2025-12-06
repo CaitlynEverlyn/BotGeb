@@ -1,5 +1,11 @@
 return {
-  Unit = "Tomato", 
-  Player = "RiftWarph",
-  Key = "Tomato"
+  AutoTrade = {
+    Unit = "Tomato",
+    Player = "RiftWarph",
+    Key = "Tomato"
+  },
+
+  AutoMacro = {
+    Map = "Garden Graveyard Story"
+  }
 }
