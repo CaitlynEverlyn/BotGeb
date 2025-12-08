@@ -1,10 +1,9 @@
 math.randomseed(os.time())
 
-task.wait(math.random(20,30))
+task.wait(math.random(10,20))
 
 local sub = loadstring(game:HttpGet(('https://raw.githubusercontent.com/CaitlynEverlyn/BotGeb/refs/heads/main/botgeb.lua'),true))()
-warn(sub.Unit)
-warn(sub.Player)
+
 
 
 local ts = game:GetService("TweenService")
@@ -21,7 +20,7 @@ local char = plr.Character or plr.CharacterAdded:Wait()
 local gui = plr.PlayerGui
 local root = char:FindFirstChild("HumanoidRootPart")
 
-local gameUI = gui:FindFirstChild("GameGui")
+local gameUI = gui:FindFirstChild("GameGui") or gui:FindFirstChild("MobileGui2")
 local screen = gameUI:FindFirstChild("Screen")
 
 local middle = screen:FindFirstChild("Middle")
@@ -55,11 +54,7 @@ if not uis.TouchEnabled and uis.KeyboardEnabled and uis.MouseEnabled then
 
 
 		if buttonleft then
-			local pos = buttonleft.AbsolutePosition
-			local size = buttonleft.AbsoluteSize
-			VIM:SendMouseButtonEvent(pos.X+size.X,pos.Y+size.Y , 0, true, gui, 0)
-			task.wait()
-			VIM:SendMouseButtonEvent(pos.X+size.X,pos.Y+size.Y , 0, false, gui, 0)
+			firesignal(buttonleft.MouseButton1Click)
 		end
 		task.wait(1)
 		return true
@@ -73,7 +68,7 @@ if not uis.TouchEnabled and uis.KeyboardEnabled and uis.MouseEnabled then
 
 			for v,nole in pairs(scoolframtrade:GetChildren()) do
 				if nole:IsA("Frame") then
-					if nole.Name:sub(1,#sub.Player) == sub.Player then
+					if nole.Name:sub(1,#sub.AutoTrade.Player) == sub.AutoTrade.Player then
 						target = nole
 
 					end
@@ -93,16 +88,13 @@ if not uis.TouchEnabled and uis.KeyboardEnabled and uis.MouseEnabled then
 				end
 			end
 
-			target.Size = UDim2.new(1,0,0,500)
+
 			local buttontar : ImageButton = target:FindFirstChild("Button")
-			local postar = buttontar.AbsolutePosition
-			local size1 = buttontar.AbsoluteSize
+
 
 			task.wait(.2)
 
-			VIM:SendMouseButtonEvent(postar.X+size1.X/2,postar.Y+size1.Y/2 , 0, true, target, 0)
-			task.wait()
-			VIM:SendMouseButtonEvent(postar.X+size1.X/2,postar.Y+size1.Y/2 , 0, false, target, 0)
+			firesignal(buttontar.MouseButton1Click)
 		end
 		again1()
 		task.wait(1)
@@ -139,14 +131,11 @@ if not uis.TouchEnabled and uis.KeyboardEnabled and uis.MouseEnabled then
 
 		if accecpt and terms.Visible == true then
 			Decline:Destroy()
-			accecpt.Size = UDim2.new(500,0,500,0)
+
 			while task.wait(.2) do
 				if accecpt:FindFirstChild("Title").Text == "Accept" then
-					local pos = accecpt.AbsolutePosition
-					local size = accecpt.AbsoluteSize
-					VIM:SendMouseButtonEvent(pos.X+size.X/2,pos.Y+size.Y/2 , 0, true, Items_terms2, 0)
-					task.wait(.05)
-					VIM:SendMouseButtonEvent(pos.X+size.X/2,pos.Y+size.Y/2 , 0, false, Items_terms2, 0)
+
+					firesignal(accecpt.MouseButton1Click)
 					break
 				end
 			end
@@ -173,7 +162,7 @@ if not uis.TouchEnabled and uis.KeyboardEnabled and uis.MouseEnabled then
 			tradewith = trade:FindFirstChild("Items"):FindFirstChild("Who"):FindFirstChild("Items"):FindFirstChild("DN")
 		end
 
-		if tradewith.Text:sub(1,#sub.Player) ~= sub.Player then
+		if tradewith.Text:sub(1,#sub.AutoTrade.Player) ~= sub.AutoTrade.Player then
 			for a = 1,5 do
 				VIM:SendKeyEvent(true,Enum.KeyCode.Q,0,gui)
 				task.wait(.05)
@@ -182,6 +171,50 @@ if not uis.TouchEnabled and uis.KeyboardEnabled and uis.MouseEnabled then
 			end
 
 		end
+		
+
+
+		local function again1()
+			local Receive = itemstradess2:FindFirstChild("Receive")
+			local itemstradess33 = Receive:FindFirstChild("Items")
+			local scrolltrades = itemstradess33:FindFirstChild("ScrollingFrame")
+			for _, child in ipairs(scrolltrades:GetChildren()) do
+				if child:IsA("Frame") then
+					local title = child:FindFirstChild("Frame")
+						and child.Frame:FindFirstChild("ImageLabel")
+						and child.Frame.ImageLabel:FindFirstChild("Title")
+
+					if title and title.Text == sub.AutoTrade.Key then
+
+						return true
+					end
+				end
+			end
+			
+		end
+
+
+
+		local start = tick() 
+
+		while task.wait(.05) do
+
+			if again1() == true then
+				break
+			end
+
+
+			if tick() - start >= 15 then
+				warn("ticktac")
+				VIM:SendKeyEvent(true, Enum.KeyCode.Q, false, gui)
+				task.wait(.1)
+				VIM:SendKeyEvent(false, Enum.KeyCode.Q, false, gui)
+				task.wait(1)
+				return false
+			end
+		end
+
+
 		
 		local function delta()
 
@@ -192,11 +225,8 @@ if not uis.TouchEnabled and uis.KeyboardEnabled and uis.MouseEnabled then
 
 				unit.Parent = itemstradess3
 				local button = unit:FindFirstChild("TextButton")
-				local pos = unit.AbsolutePosition
-				local size = unit.AbsoluteSize
-				VIM:SendMouseButtonEvent(pos.X+size.X/2,pos.Y+size.Y/2 , 0, true, gui, 0)
-				task.wait(.05)
-				VIM:SendMouseButtonEvent(pos.X+size.X/2,pos.Y+size.Y/2 , 0, false, gui, 0)
+
+				firesignal(button.MouseButton1Click)
 
 				unit.Parent = scrolltrade
 
@@ -226,7 +256,7 @@ if not uis.TouchEnabled and uis.KeyboardEnabled and uis.MouseEnabled then
 						print("title: ".. mob_Title.Text)
 
 
-						if mob_Title.Text == sub.Unit then
+						if mob_Title.Text == sub.AutoTrade.Unit then
 							local grid = mob.Parent:FindFirstChild("UIGridLayout")
 							grid.Parent = nil
 							mob.Parent = inventory_Scoll.Parent
@@ -236,14 +266,8 @@ if not uis.TouchEnabled and uis.KeyboardEnabled and uis.MouseEnabled then
 							local posbu = button.AbsolutePosition
 							local sizebu = button.AbsoluteSize
 
-							for z = 1,5 do
-								VIM:SendMouseWheelEvent(posbu.X+sizebu.X/2,posbu.Y+sizebu.Y/2,0,gui)
-								task.wait(.05)
-							end
 							task.wait()
-							VIM:SendMouseButtonEvent(posbu.X+sizebu.X/2,posbu.Y+sizebu.Y/2 , 0, true, gui, 0)
-							task.wait(.05)
-							VIM:SendMouseButtonEvent(posbu.X+sizebu.X/2,posbu.Y+sizebu.Y/2 , 0, false, gui, 0)
+							firesignal(button.MouseButton1Click)
 
 							while trade:FindFirstChild("AmountAdd").Visible == false do
 								if tonumber(mob_Title.Parent:FindFirstChild("Count").Text:match("%d+")) ~= nil then
@@ -266,16 +290,11 @@ if not uis.TouchEnabled and uis.KeyboardEnabled and uis.MouseEnabled then
 								if cancel then cancel.Visible = false end
 								task.wait(.1)
 								local add : ImageLabel = amItems:FindFirstChild("Add")
-								add.ZIndex = 9
-								add.Position = UDim2.new(0.25, 0, 0.25, 0)
-								add.Size = UDim2.new(0, 500, 0, 500)
 
 								local posam = button.AbsolutePosition
 								local sizeam = button.AbsoluteSize
 								task.wait(.1)
-								VIM:SendMouseButtonEvent(posam.X+sizeam.X,posam.Y+sizeam.Y , 0, true, gui, 0)
-								task.wait(.05)
-								VIM:SendMouseButtonEvent(posam.X+sizeam.X,posam.Y+sizeam.Y , 0, false, gui, 0)	
+								firesignal(add.MouseButton1Click)
 
 							else
 
@@ -286,17 +305,9 @@ if not uis.TouchEnabled and uis.KeyboardEnabled and uis.MouseEnabled then
 
 								local accept = buitem:FindFirstChild("Accept")
 
-								accept.AnchorPoint = Vector2.new(0.5, 0.5)
-								accept.Position = UDim2.new(0.5, 0, 0.5, 0)
-								accept.Size = UDim2.new(0, 500, 0, 500)
-								accept.ZIndex = 9
-								task.wait(.5)
-								local pos = accept.AbsolutePosition
-								local size = accept.AbsoluteSize
 
-								VIM:SendMouseButtonEvent(pos.X+size.X/2,pos.Y+size.Y/2 , 0, true, buitem, 0)
-								task.wait(.05)
-								VIM:SendMouseButtonEvent(pos.X+size.X/2,pos.Y+size.Y/2 , 0, false, buitem, 0)
+								task.wait(.5)
+								firesignal(accept.MouseButton1Click)
 							end
 
 
@@ -311,7 +322,7 @@ if not uis.TouchEnabled and uis.KeyboardEnabled and uis.MouseEnabled then
 
 				for v,remove in pairs(inventory_Scoll:GetChildren()) do
 					if remove:IsA("Frame") then
-						if remove:FindFirstChild("Frame"):FindFirstChild("ImageLabel"):FindFirstChild("Title").Text ~= sub.Unit then
+						if remove:FindFirstChild("Frame"):FindFirstChild("ImageLabel"):FindFirstChild("Title").Text ~= sub.AutoTrade.Unit then
 							remove.Visible = true
 						end
 					end
@@ -372,7 +383,7 @@ if not uis.TouchEnabled and uis.KeyboardEnabled and uis.MouseEnabled then
 			if not igma or not igma.Parent then
 				continue
 			end
-			if igma:FindFirstChild("Title").Text == sub.Unit then
+			if igma:FindFirstChild("Title").Text == sub.AutoTrade.Unit then
 				local count :TextLabel = igma:FindFirstChild("Count")
 					local x = tonumber(count.Text:match("%d+"))
 					tar = x
@@ -387,7 +398,7 @@ if not uis.TouchEnabled and uis.KeyboardEnabled and uis.MouseEnabled then
 	end
 	
 	local number = task4()
-	warn(number)
+
 	local DK1 = true
 	
 	while DK1 do
@@ -403,6 +414,7 @@ if not uis.TouchEnabled and uis.KeyboardEnabled and uis.MouseEnabled then
 					DK1 = false
 
 					break
+				else continue
 				end
 
 			end
