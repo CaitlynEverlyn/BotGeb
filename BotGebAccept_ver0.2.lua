@@ -1,8 +1,7 @@
 -- completed
-
+task.wait(10)
 local sub = loadstring(game:HttpGet(('https://raw.githubusercontent.com/CaitlynEverlyn/BotGeb/refs/heads/main/botgeb.lua'),true))()
-warn(sub.Unit)
-warn(sub.Player)
+
 
 
 local ts = game:GetService("TweenService")
@@ -19,7 +18,7 @@ local char = plr.Character or plr.CharacterAdded:Wait()
 local gui = plr.PlayerGui
 local root = char:FindFirstChild("HumanoidRootPart")
 
-local gameUI = gui:FindFirstChild("GameGui")
+local gameUI = gui:FindFirstChild("GameGui") or gui:FindFirstChild("MobileGui2")
 local screen = gameUI:FindFirstChild("Screen")
 
 local middle = screen:FindFirstChild("Middle")
@@ -115,20 +114,23 @@ local task1 = function()
 
 	for _,child in ipairs(RE_NOTIFYCLIENT:GetChildren()) do
 		if child ~= meno and child:IsA("TextButton") then
-			child.Visible = false
+			local chilr = child:FindFirstChild("Options"):FindFirstChild("Decline")
+			if chilr then
+				
+				task.wait(.1)
+				firesignal(chilr.MouseButton1Click)
+				task.wait()
+			end
+
 		end
 	end
 	task.wait(1)
 
 	local acceptmeno : TextButton = meno:FindFirstChild("Options"):FindFirstChild("Accept")
 
-	acceptmeno.Size = UDim2.new(0,500,0,500)
+
 	task.wait(.1)
-	local pos = acceptmeno.AbsolutePosition
-	local size = acceptmeno.AbsoluteSize
-	VIM:SendMouseButtonEvent(pos.X+size.X/2,pos.Y+size.Y/2 , 0, true, gui, 0)
-	task.wait(.05)
-	VIM:SendMouseButtonEvent(pos.X+size.X/2,pos.Y+size.Y/2, 0, false, gui, 0)
+	firesignal(acceptmeno.MouseButton1Click)
 
 	task.wait(1)
 	local trade = nil
@@ -162,14 +164,10 @@ local task1 = function()
 	if accecpt and terms.Visible == true then
 		Decline:Destroy()
 
-		accecpt.Size = UDim2.new(500,0,500,0)
+
 		while task.wait(.2) do
 			if accecpt:FindFirstChild("Title").Text == "Accept" then
-				local pos = accecpt.AbsolutePosition
-				local size = accecpt.AbsoluteSize
-				VIM:SendMouseButtonEvent(pos.X+size.X/2,pos.Y+size.Y/2 , 0, true, Items_terms2, 0)
-				task.wait(.05)
-				VIM:SendMouseButtonEvent(pos.X+size.X/2,pos.Y+size.Y/2 , 0, false, Items_terms2, 0)
+				firesignal(accecpt.MouseButton1Click)
 				break
 			end
 		end
@@ -183,12 +181,129 @@ local task2 = function()
 	local trade = middle:FindFirstChild("Trade")
 	local itemstradess1 = trade:FindFirstChild("Items")
 	local itemstradess2 = itemstradess1:FindFirstChild("Items")
-	local give = itemstradess2:FindFirstChild("Receive")
-	local itemstradess3 = give:FindFirstChild("Items")
+	
+	local Receive = itemstradess2:FindFirstChild("Receive")
+	local itemstradess3 = Receive:FindFirstChild("Items")
 	local scrolltrade = itemstradess3:FindFirstChild("ScrollingFrame")
 
-	task.wait(10)
 
+	
+	local function delta()
+		task.wait(1)
+		local trade = middle:FindFirstChild("Trade")
+		local itemstradess1 = trade:FindFirstChild("Items")
+		local itemstradess2 = itemstradess1:FindFirstChild("Items")
+		local give = itemstradess2:FindFirstChild("Give")
+		local itemstradess3 = give:FindFirstChild("Items")
+		local scrolltrade = itemstradess3:FindFirstChild("ScrollingFrame")
+
+		local unit = scrolltrade:FindFirstChild("unit_more")
+		
+		local unit = scrolltrade:FindFirstChild("unit_more")
+
+		task.wait(.3)
+
+		if unit:IsA("Frame") and unit.Name == "unit_more" and unit:FindFirstChild("TextButton") then
+
+			unit.Parent = itemstradess3
+			local button = unit:FindFirstChild("TextButton")
+			firesignal(button.MouseButton1Click)
+
+			unit.Parent = scrolltrade
+			
+
+			local inventorytrade = trade:FindFirstChild("Inventory")
+			local inventorytrade2 = inventorytrade:FindFirstChild("Inventory")
+			local inventoryframe1 = inventorytrade2:FindFirstChild("Frame")
+			local inventory_items1 = inventoryframe1:FindFirstChild("Items")
+			local inventory_items2 = inventory_items1:FindFirstChild("Items")
+			local inventory_Scoll = inventory_items2:FindFirstChild("ScrollingFrame")
+			print(inventory_Scoll)
+
+			for v,remove in pairs(inventory_Scoll:GetChildren()) do
+				if remove:IsA("Frame") then
+					if remove:FindFirstChild("Frame"):FindFirstChild("ImageLabel"):FindFirstChild("Title").Text ~= sub.AutoTrade.Key then
+						remove.Visible = false
+					end
+				end
+			end
+
+			for v,mob in pairs(inventory_Scoll:GetChildren()) do
+				if mob:IsA("Frame") then
+					print(mob)
+					local mob_Frame = mob:FindFirstChild("Frame")
+					local mob_Image = mob_Frame:FindFirstChild("ImageLabel")
+					local mob_Title = mob_Image:FindFirstChild("Title")
+					print("title: ".. mob_Title.Text)
+
+
+					if mob_Title.Text == sub.AutoTrade.Key then
+						local grid = mob.Parent:FindFirstChild("UIGridLayout")
+						grid.Parent = nil
+						mob.Parent = inventory_Scoll.Parent
+
+						local button = mob:FindFirstChild("TextButton")
+
+						local posbu = button.AbsolutePosition
+						local sizebu = button.AbsoluteSize
+
+						for z = 1,5 do
+							VIM:SendMouseWheelEvent(posbu.X+sizebu.X/2,posbu.Y+sizebu.Y/2,0,gui)
+							task.wait(.05)
+						end
+						task.wait()
+						firesignal(button.MouseButton1Click)
+
+						while trade:FindFirstChild("AmountAdd").Visible == false do
+							if tonumber(mob_Title.Parent:FindFirstChild("Count").Text:match("%d+")) ~= nil then
+								task.wait(.05)
+							else
+								break
+							end	
+						end
+
+						if trade:FindFirstChild("AmountAdd").Visible == true then
+
+							local AmountAdd = trade:FindFirstChild("AmountAdd")
+							local amFrame = AmountAdd:FindFirstChild("Frame")
+							local amFrame2 = amFrame:FindFirstChild("Frame")
+							local amActions = amFrame2:FindFirstChild("Actions")
+							local amItems = amActions:FindFirstChild("Items")
+							local uilist = amItems:FindFirstChild("UIListLayout")
+							if uilist then uilist:Destroy() end
+							local cancel = amActions:FindFirstChild("Cancel")
+							if cancel then cancel.Visible = false end
+							task.wait(.1)
+							local add : ImageLabel = amItems:FindFirstChild("Add")
+
+							task.wait(.1)
+							firesignal(add.MouseButton1Click)
+
+						end
+
+
+						grid.Parent = inventory_Scoll
+
+						break
+					end
+				end
+
+
+			end
+
+			for v,remove in pairs(inventory_Scoll:GetChildren()) do
+				if remove:IsA("Frame") then
+					if remove:FindFirstChild("Frame"):FindFirstChild("ImageLabel"):FindFirstChild("Title").Text ~= sub.Unit then
+						remove.Visible = true
+					end
+				end
+			end
+
+			task.wait()
+			return true
+		end
+	end
+	task.wait(1)
 	local function again1()
 		for _, unit in pairs(scrolltrade:GetChildren()) do
 			if unit:IsA("Frame") then
@@ -196,7 +311,7 @@ local task2 = function()
 					and unit.Frame:FindFirstChild("ImageLabel")
 					and unit.Frame.ImageLabel:FindFirstChild("Title")
 
-				if title and title.Text == sub.Unit then
+				if title and title.Text == sub.AutoTrade.Unit then
 					-- FOUND=accept
 					local buttons = itemstradess2:FindFirstChild("Buttons")
 					local buitem = buttons:FindFirstChild("Items")
@@ -205,20 +320,14 @@ local task2 = function()
 					
 					local accept = buitem:FindFirstChild("Accept")
 
-					accept.AnchorPoint = Vector2.new(0.5, 0.5)
-					accept.Position = UDim2.new(0.5, 0, 0.5, 0)
-					accept.Size = UDim2.new(0, 500, 0, 500)
-					accept.ZIndex = 9
 
 					task.wait(.1)
 					local pos = accept.AbsolutePosition
 					local size = accept.AbsoluteSize
 	
 					while task.wait(.05) do
-						if give:FindFirstChild("Ready").Visible == true then
-							VIM:SendMouseButtonEvent(pos.X+size.X/2,pos.Y+size.Y/2 , 0, true, buitem, 0)
-							task.wait(.05)
-							VIM:SendMouseButtonEvent(pos.X+size.X/2,pos.Y+size.Y/2 , 0, false, buitem, 0)
+						if Receive:FindFirstChild("Ready").Visible == true then
+							firesignal(accept.MouseButton1Click)
 							break
 						end
 					end
@@ -234,18 +343,27 @@ local task2 = function()
 
 	-- AUTO LOOP
 	while true do
-		local ok = again1()
+		local delt = delta()
+		if delt == true then
+			local ok = again1()
 
-		if ok == true then
-			break -- thoát
+			if ok == true then
+				break -- thoát
+			else
+				-- if not fouynd then break
+				task.wait(.5)
+				VIM:SendKeyEvent(true,Enum.KeyCode.Q,0,gui)
+				task.wait(.1)
+				VIM:SendKeyEvent(false,Enum.KeyCode.Q,0,gui)
+				task.wait(2)
+				break
+			end
 		else
-			-- if not fouynd then break
 			task.wait(.5)
 			VIM:SendKeyEvent(true,Enum.KeyCode.Q,0,gui)
 			task.wait(.1)
 			VIM:SendKeyEvent(false,Enum.KeyCode.Q,0,gui)
 			task.wait(2)
-			break
 		end
 	end
 
