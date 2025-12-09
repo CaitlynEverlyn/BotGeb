@@ -1,7 +1,7 @@
 return {
   AutoTrade = {
     Unit = "Tomato",
-    Player = "RiftWarph",
+    Player = "kfowlerd",
     Key = "Tomato"
   },
 
