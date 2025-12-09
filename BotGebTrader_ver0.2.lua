@@ -1,6 +1,6 @@
 math.randomseed(os.time())
 
-task.wait(math.random(10,20))
+task.wait(math.random(20,30))
 
 local sub = loadstring(game:HttpGet(('https://raw.githubusercontent.com/CaitlynEverlyn/BotGeb/refs/heads/main/botgeb.lua'),true))()
 
