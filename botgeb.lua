@@ -1,4 +1,8 @@
 return {
+  Autofilter = {
+    [1] = "Christmas Tree",
+  },
+  
   AutoTrade = {
     Unit = "Tomato",
     Player = "kfowlerd",
