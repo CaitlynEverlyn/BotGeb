@@ -1,6 +1,8 @@
 return {
   Autofilter = {
     [1] = "Venus Flytrap",
+    [2] = "Snowblossom",
+    [3] = "Subzero Stem"
   },
   
   AutoTrade = {
